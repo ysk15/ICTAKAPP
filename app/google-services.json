@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "735710746291",
+    "firebase_url": "https://ict-ak-app.firebaseio.com",
+    "project_id": "ict-ak-app",
+    "storage_bucket": "ict-ak-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735710746291:android:7e86ee82eefa2f5c",
+        "android_client_info": {
+          "package_name": "com.example.user.ictakapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735710746291-c8c68ehb5lolntcoufb08e7io51e7c1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB01gGcY2E2K7jqQZlbJI7PqNRq2TOWwpk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
