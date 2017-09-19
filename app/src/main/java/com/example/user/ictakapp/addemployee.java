@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 
 
@@ -116,7 +111,6 @@ public class addemployee extends Fragment {
                     det.setPsegend(sgender);
                     det.setPsimg(simage);
                     det.setType("employee");
-                    df.child("test").setValue("added");
                     df.child(seemail).setValue(det).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -173,23 +167,27 @@ public class addemployee extends Fragment {
                 Uri file = data.getData();
                 StorageReference riversRef = sf.child("emppics/"+file.getLastPathSegment());
                  UploadTask     uploadTask = riversRef.putFile(file);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        pg.dismiss();
-                        Log.e("failed","fail");
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        pg.dismiss();
-                        Log.e("success","success");
-                        simage= taskSnapshot.getDownloadUrl().toString();
-                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-                    }
-                });
+               uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                       pg.dismiss();
+                       if(task.isSuccessful()){
+                           Toast.makeText(getActivity(), "image uploaded", Toast.LENGTH_SHORT).show();
+                           simage=   task.getResult().getDownloadUrl().toString();
+                       }
 
+                       else{
+                           Toast.makeText(getActivity(), "image uploaded failed", Toast.LENGTH_SHORT).show();
+                       }
+
+
+                   }
+               }).addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT).show();
+                   }
+               });
 
 
             } else if (resultCode == Activity.RESULT_CANCELED) {

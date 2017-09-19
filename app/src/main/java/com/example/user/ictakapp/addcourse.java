@@ -1,6 +1,7 @@
 package com.example.user.ictakapp;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ public class addcourse extends Fragment {
     String name,duration,desp;
     Button bu;
     DatabaseReference df;
+    ProgressDialog pg;
     public addcourse() {
 
     }
@@ -38,6 +40,7 @@ public class addcourse extends Fragment {
         cduration=(EditText)v.findViewById(R.id.duration);
         cdesp=(EditText)v.findViewById(R.id.cdesc);
         bu =(Button)v.findViewById(R.id.button2);
+        pg = new ProgressDialog(getActivity());
         df = FirebaseDatabase.getInstance().getReference().child("coursedet");
         bu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +48,12 @@ public class addcourse extends Fragment {
                 name = cname.getText().toString();
                 duration=cduration.getText().toString();
                 desp=cdesp.getText().toString();
-                if(name.equals("")||duration.equals("")||cdesp.equals("")){
+                if(name.equals("")||duration.equals("")||cdesp.equals("")) {
+                    Toast.makeText(getActivity(), "Fields Empty", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    pg.show();
                     coursedet cd = new coursedet();
                     cd.setName(name);
                     cd.setDesc(desp);
@@ -53,11 +61,13 @@ public class addcourse extends Fragment {
                     df.child(name).setValue(cd).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            pg.dismiss();
                             Toast.makeText(getActivity(), "Course Added", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            pg.dismiss();
                             Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
