@@ -5,8 +5,16 @@ package com.example.user.ictakapp;
  */
 
 public class leavedet {
-    private String fdate,todate,reason,status,empl;
+    private String fdate,todate,reason,status,empl,noofdays;
 
+
+    public String getNoofdays() {
+        return noofdays;
+    }
+
+    public void setNoofdays(String noofdays) {
+        this.noofdays = noofdays;
+    }
 
     public String getEmpl() {
         return empl;

@@ -74,14 +74,13 @@ public class Adminhome extends AppCompatActivity
             f = new addmember();
 
         } else if (id == R.id.nav_slideshow) {
-            f = new addcourse();
+            f = new viewcourse();
 
         } else if (id == R.id.nav_manage) {
             f = new viewleaverequest();
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        }  else if (id == R.id.nav_send) {
+            finish();
 
         }
         if(f!=null){

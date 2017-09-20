@@ -21,9 +21,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -101,11 +104,12 @@ public class leaveapply extends Fragment {
                 else {
                     pg.show();
                     leavedet ld = new leavedet();
-                    ld.setStatus("request");
+                    ld.setStatus("ON REQUEST");
                     ld.setEmpl(sq.CheckLogin()[0]);
                     ld.setReason(re);
                     ld.setFdate(fr);
                     ld.setTodate(to);
+                    ld.setNoofdays(noofdays(fr,to));
                     df.child(sq.CheckLogin()[0]).setValue(ld).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -143,6 +147,21 @@ public class leaveapply extends Fragment {
         else {
             tdate.setText(sdf.format(myCalendar.getTime()));
         }
+
+    }
+   public String noofdays(String from,String to){
+       String myFormat = "dd/MM/yyyy"; //In which you need put here
+       String days= "";
+       SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+       try {
+           Date date1 = sdf.parse(from);
+           Date date2 = sdf.parse(to);
+           long diff = date2.getTime() - date1.getTime();
+           days= ""+ TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+       } catch (ParseException e) {
+           e.printStackTrace();
+       }
+       return days;
 
     }
 
