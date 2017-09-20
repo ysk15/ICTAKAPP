@@ -52,7 +52,7 @@ public class sturegister extends AppCompatActivity {
                     Toast.makeText(sturegister.this, "Fields Empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    studentdet sd = new studentdet();
+                    registerdet sd = new registerdet();
                     sd.setName(sname);
                     sd.setDob(sdob);
                     sd.setType("student");

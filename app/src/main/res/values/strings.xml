@@ -9,4 +9,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_studenthome">Studenthome</string>
+    <string name="title_activity_employeehome">Employeehome</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_memberhome">Memberhome</string>
+    <string-array name="spinner">
+        <item>PICK REASON</item>
+        <item>COMBANSATION</item>
+        <item>CASUAL</item>
+        <item>DUTY OFF</item>
+        <item>MATERNITY</item>
+        <item>EARNED</item>
+        <item>SICK</item>
+    </string-array>
 </resources>

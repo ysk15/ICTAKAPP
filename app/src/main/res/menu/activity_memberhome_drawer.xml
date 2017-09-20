@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="ADD EMPLOYEE" />
+            android:title="VIEW COURSE" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="ADD MEMBER" />
+            android:title="Gallery" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="ADD COURSE" />
+            android:title="Slideshow" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="VIEW LEAVE REQUESTS" />
+            android:title="Tools" />
     </group>
 
     <item android:title="Communicate">

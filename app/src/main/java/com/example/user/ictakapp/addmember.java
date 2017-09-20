@@ -58,11 +58,11 @@ public class addmember extends Fragment {
                     Toast.makeText(getActivity(), "Fields Empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    memeberdet md = new memeberdet();
+                    registerdet md = new registerdet();
                     md.setName(mname);
                     md.setEmail(memail);
-                    md.setPassword(mpass);
-                    md.setNumber(mnum);
+                    md.setPass(mpass);
+                    md.setNum(mnum);
                     md.setType("member");
                     df.child(memail).setValue(md).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

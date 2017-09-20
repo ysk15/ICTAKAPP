@@ -1,7 +1,6 @@
 package com.example.user.ictakapp;
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,15 +21,13 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class viewcourse extends Fragment {
+public class viewleaverequest extends Fragment {
     ListView lv;
     DatabaseReference df;
-    ArrayList<String> arr;
     ArrayAdapter<String> ad;
-    ProgressDialog pg;
+    ArrayList<String> arr;
 
-
-    public viewcourse() {
+    public viewleaverequest() {
         // Required empty public constructor
     }
 
@@ -40,34 +36,36 @@ public class viewcourse extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_viewcourse, container, false);
-        df = FirebaseDatabase.getInstance().getReference().child("coursedet");
-        lv = (ListView)v.findViewById(R.id.listView);
+        View v=  inflater.inflate(R.layout.fragment_viewleaverequest, container, false);
+         lv = (ListView)v.findViewById(R.id.lvleave);
+        df = FirebaseDatabase.getInstance().getReference().child("leavedet");
         arr = new ArrayList<>();
-        pg = new ProgressDialog(getActivity());
-        ad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,arr);
+         ad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,arr);
         df.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-              for(DataSnapshot ds:dataSnapshot.getChildren()){
-                  coursedet cd = ds.getValue(coursedet.class) ;
-                  String details = "COURSE NAME:"+cd.getName()
-                          +"\nDESCRIPTION"+cd.getDesc()
-                          +"\nDURATION"+cd.getDuration();
-                  arr.add(details);
-              }
+                for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                    leavedet ld = ds.getValue(leavedet.class);
+                    String det = "EMPLOYEE ID:"+ld.getEmpl()
+                            +"\nFROM DATE: "+ld.getFdate()
+                            +"\nTO DATE: "+ld.getTodate();
+                    arr.add(det);
+
+
+
+
+                }
                 lv.setAdapter(ad);
-                pg.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                pg.dismiss();
-                Toast.makeText(getActivity(), "Network Problem", Toast.LENGTH_SHORT).show();
+
             }
         });
 
-        return v;
+
+         return  v;
     }
 
 }

@@ -101,17 +101,17 @@ public class addemployee extends Fragment {
                 }
                 else {
                     pg.show();
-                    empdet det = new empdet();
-                    det.setPsedept(sedept);
-                    det.setPsedesig(sedesig);
-                    det.setPseemail(seemail);
-                    det.setPsename(sename);
-                    det.setPsenumb(senumb);
-                    det.setPsepass(sepass);
-                    det.setPsegend(sgender);
-                    det.setPsimg(simage);
-                    det.setType("employee");
-                    df.child(seemail).setValue(det).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    registerdet rdet = new registerdet();
+                    rdet.setName(sename);
+                    rdet.setEmail(seemail);
+                    rdet.setPass(sepass);
+                    rdet.setGender(sgender);
+                    rdet.setDept(sedept);
+                    rdet.setImg(simage);
+                    rdet.setDesig(sedesig);
+                    rdet.setNum(senumb);
+                    rdet.setType("employee");
+                    df.child(seemail).setValue(rdet).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                          pg.dismiss();
