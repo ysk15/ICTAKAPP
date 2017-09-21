@@ -79,7 +79,12 @@ public class Adminhome extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             f = new viewleaverequest();
 
-        }  else if (id == R.id.nav_send) {
+        }
+        else if (id == R.id.nav_manage1) {
+            f = new viewapplicants();
+
+        }
+        else if (id == R.id.nav_send) {
             finish();
 
         }

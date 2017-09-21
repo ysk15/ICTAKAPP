@@ -23,15 +23,15 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class viewcourse extends Fragment {
+public class viewapplicants extends Fragment {
     ListView lv;
+    ProgressDialog pg;
     DatabaseReference df;
     ArrayList<String> arr;
     ArrayAdapter<String> ad;
-    ProgressDialog pg;
 
 
-    public viewcourse() {
+    public viewapplicants() {
         // Required empty public constructor
     }
 
@@ -40,34 +40,42 @@ public class viewcourse extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_viewcourse, container, false);
-        df = FirebaseDatabase.getInstance().getReference().child("coursedet");
-        lv = (ListView)v.findViewById(R.id.listView);
-        arr = new ArrayList<>();
+        View v = inflater.inflate(R.layout.fragment_viewapplicants, container, false);
         pg = new ProgressDialog(getActivity());
+        arr =new ArrayList<>();
+        lv=(ListView)v.findViewById(R.id.lv);
         ad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,arr);
+        df= FirebaseDatabase.getInstance().getReference().child("courseapply");
+        pg.show();
         df.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-              for(DataSnapshot ds:dataSnapshot.getChildren()){
-                  coursedet cd = ds.getValue(coursedet.class) ;
-                  String details = "COURSE NAME: "+cd.getName()
-                          +"\nDESCRIPTION: "+cd.getDesc()
-                          +"\nDURATION: "+cd.getDuration();
-                  arr.add(details);
-              }
+                for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                    pg.dismiss();
+                    courseapplydet ca =ds.getValue(courseapplydet.class);
+                    String data = "STUDENT NAME: "+ca.getName()
+                            +"\n"+ca.getCname()
+                            +"\nDURATION: "+ca.getCduration()
+                            +"\nCOLLEGE NAME: "+ca.getColleage()
+                            +"\nDEPARTMENT : "+ca.getBranch()
+                            +"\nSEMESTER: "+ca.getSemester();
+                    arr.add(data);
+
+                }
                 lv.setAdapter(ad);
-                pg.dismiss();
+
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 pg.dismiss();
-                Toast.makeText(getActivity(), "Network Problem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "ERROR LOADING LIST", Toast.LENGTH_SHORT).show();
+
             }
         });
 
-        return v;
+        return  v;
     }
 
 }

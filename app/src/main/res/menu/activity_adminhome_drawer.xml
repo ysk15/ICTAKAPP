@@ -20,6 +20,11 @@
             android:title="VIEW LEAVE REQUESTS" />
 
         <item
+            android:id="@+id/nav_manage1"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="COURSE REQUESTS" />
+
+        <item
             android:id="@+id/nav_send"
             android:icon="@drawable/ic_menu_send"
             android:title="LOGOUT" />

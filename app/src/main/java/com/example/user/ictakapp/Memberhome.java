@@ -29,7 +29,6 @@ public class Memberhome extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -62,7 +61,6 @@ public class Memberhome extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -72,27 +70,17 @@ public class Memberhome extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment f = null;
-
         if (id == R.id.nav_camera) {
             f = new viewcourse();
         } else if (id == R.id.nav_gallery) {
-
+            f = new yellowcard();
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        finish();
         }
         if(f!=null){
             FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction().replace(R.id.memberframe,f).commit();
         }
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

@@ -75,15 +75,10 @@ public class Studenthome extends AppCompatActivity
         if (id == R.id.nav_camera) {
           f = new viewcourse();
         } else if (id == R.id.nav_gallery) {
-
+            f = new applycourse();
 
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            finish();
 
         }
         if(f!=null){
