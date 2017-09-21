@@ -40,6 +40,7 @@
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login" />
+        <activity android:name=".sturegister"/>
         <activity
             android:name=".Memberhome"
             android:label="@string/title_activity_memberhome"

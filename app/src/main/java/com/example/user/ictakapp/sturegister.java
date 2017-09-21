@@ -1,6 +1,7 @@
 package com.example.user.ictakapp;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -21,11 +22,10 @@ public class sturegister extends AppCompatActivity {
     String sname,sdob,semail,spass,scollege,sbranch,ssem,snum;
     Button bu;
     DatabaseReference df;
-
-
+    ProgressDialog pg;
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_sturegister);
         name=(EditText)findViewById(R.id.sname);
         dob=(EditText)findViewById(R.id.sdob);
@@ -36,6 +36,7 @@ public class sturegister extends AppCompatActivity {
         sem=(EditText)findViewById(R.id.ssem);
         num=(EditText)findViewById(R.id.snum);
         bu=(Button)findViewById(R.id.button4);
+        pg=new ProgressDialog(sturegister.this);
         df = FirebaseDatabase.getInstance().getReference().child("registerdet");
         bu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +53,7 @@ public class sturegister extends AppCompatActivity {
                     Toast.makeText(sturegister.this, "Fields Empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    pg.show();
                     registerdet sd = new registerdet();
                     sd.setName(sname);
                     sd.setDob(sdob);
@@ -66,11 +68,13 @@ public class sturegister extends AppCompatActivity {
                     df.child(semail).setValue(sd).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            pg.dismiss();
                             Toast.makeText(sturegister.this, "Successfully Registered", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            pg.dismiss();
                             Toast.makeText(sturegister.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
                     });

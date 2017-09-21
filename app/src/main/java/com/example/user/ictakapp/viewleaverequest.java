@@ -1,6 +1,7 @@
 package com.example.user.ictakapp;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ public class viewleaverequest extends Fragment {
     ArrayAdapter<String> ad;
     ArrayList<String> arr;
     ArrayList<leavedet> arr1;
+    ProgressDialog pg;
 
     public viewleaverequest() {
         // Required empty public constructor
@@ -49,10 +51,13 @@ public class viewleaverequest extends Fragment {
         df = FirebaseDatabase.getInstance().getReference().child("leavedet");
         arr = new ArrayList<>();
         arr1 = new ArrayList<>();
+        pg = new ProgressDialog(getActivity());
+        pg.show();
          ad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,arr);
         df.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                pg.dismiss();
                 arr.clear();
                 arr1.clear();
                 for (DataSnapshot ds:dataSnapshot.getChildren()) {
@@ -70,6 +75,7 @@ public class viewleaverequest extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                pg.dismiss();
 
             }
         });
@@ -77,6 +83,7 @@ public class viewleaverequest extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder bu = new AlertDialog.Builder(getActivity());
+                bu.setTitle("LEAVE APPROOVAL or REJECTION");
                 bu.setPositiveButton("APPROOVE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

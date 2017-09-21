@@ -1,5 +1,6 @@
 package com.example.user.ictakapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class Login extends AppCompatActivity {
     String usr,pwd;
     DatabaseReference df;
     Sqlite sq;
+    ProgressDialog pg;
 
 
     @Override
@@ -31,6 +33,7 @@ public class Login extends AppCompatActivity {
         log= (Button)findViewById(R.id.button5);
         reg= (Button)findViewById(R.id.button6);
         sq = new Sqlite(Login.this);
+        pg = new ProgressDialog(Login.this);
         df = FirebaseDatabase.getInstance().getReference().child("registerdet");
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +50,11 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Fields Empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    pg.show();
                     df.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            pg.dismiss();
                             if(dataSnapshot.hasChild(usr)){
                                 registerdet emp = dataSnapshot.child(usr).getValue(registerdet.class);
                                 if(emp.getPass().equals(pwd)) {
@@ -93,6 +98,7 @@ public class Login extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
+                            pg.dismiss();
 
                         }
                     });

@@ -1,6 +1,7 @@
 package com.example.user.ictakapp;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ public class leavestatus extends Fragment {
     TextView tv;
     DatabaseReference df;
     Sqlite sq;
+    ProgressDialog pg;
 
 
     public leavestatus() {
@@ -39,9 +41,12 @@ public class leavestatus extends Fragment {
         tv=(TextView)v.findViewById(R.id.tvstatus);
         df= FirebaseDatabase.getInstance().getReference().child("leavedet");
         sq = new Sqlite(getActivity());
+        pg =new ProgressDialog(getActivity());
+        pg.show();
         df.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                pg.dismiss();
                 if(dataSnapshot.hasChild(sq.CheckLogin()[0])){
                     leavedet ld = dataSnapshot.child(sq.CheckLogin()[0]).getValue(leavedet.class);
                     String det = "EMPLOYEE ID: "+ld.getEmpl()
@@ -50,7 +55,7 @@ public class leavestatus extends Fragment {
                             +"\n NO OF DAYS: "+ld.getNoofdays()
                             +"\n APPROOVAL STATUS: "+ld.getStatus();
                     if(ld.getStatus().equals("ON REQUEST")){
-                        tv.setTextColor(Color.YELLOW);
+                        tv.setTextColor(Color.parseColor("#ffe500"));
                     tv.setText(det);
                     }
                   else  if(ld.getStatus().equals("APPROOVED")){
@@ -61,7 +66,6 @@ public class leavestatus extends Fragment {
                         tv.setTextColor(Color.RED);
                         tv.setText(det);
                     }
-
                 }
                 else {
                     Toast.makeText(getActivity(), "NO LEAVE APPLIED", Toast.LENGTH_SHORT).show();
@@ -70,6 +74,7 @@ public class leavestatus extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                pg.dismiss();
 
             }
         });

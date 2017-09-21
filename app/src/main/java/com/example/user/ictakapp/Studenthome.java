@@ -76,6 +76,7 @@ public class Studenthome extends AppCompatActivity
           f = new viewcourse();
         } else if (id == R.id.nav_gallery) {
 
+
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

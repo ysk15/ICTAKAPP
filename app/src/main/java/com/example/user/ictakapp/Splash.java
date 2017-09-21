@@ -14,9 +14,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vistrav.ask.Ask;
+import com.vistrav.ask.annotations.AskGranted;
 
 public class Splash extends AppCompatActivity {
     DatabaseReference df;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class Splash extends AppCompatActivity {
                         , android.Manifest.permission.READ_EXTERNAL_STORAGE
                         , Manifest.permission.CALL_PHONE)
                 .go();
-        df = FirebaseDatabase.getInstance().getReference().child("registerdet");
+       /* df = FirebaseDatabase.getInstance().getReference().child("registerdet");
         registerdet rdet = new registerdet();
         rdet.setName("admin");
         rdet.setEmail("a");
@@ -47,8 +49,21 @@ public class Splash extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        });*/
 
 
     }
+
+    @AskGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void storageGranted(int id) {
+
+
+    }
+
+    @AskGranted(Manifest.permission.CALL_PHONE)
+    public void callGranted(int id) {
+        startActivity(new Intent(Splash.this,Login.class));
+
+    }
+
 }
