@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +37,11 @@ public class yellowcard extends Fragment {
     ArrayList<String> arr1;
     ListView lv;
     ProgressDialog pg;
+    AutoCompleteTextView atv;
+    Button search;
+    ArrayList<String> sarr;
+    ArrayAdapter<String> sad;
+    DatabaseReference ds;
 
 
     public yellowcard() {
@@ -51,12 +58,19 @@ public class yellowcard extends Fragment {
         arr1 = new ArrayList<>();
         lv =(ListView)v.findViewById(R.id.lvemp);
         pg = new ProgressDialog(getActivity());
+        atv=(AutoCompleteTextView)v.findViewById(R.id.emptv);
+        search=(Button)v.findViewById(R.id.empsearch);
+        sarr = new ArrayList<>();
+        sad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,sarr);
          ad = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,arr);
+        atv.setThreshold(1);
+        ds = FirebaseDatabase.getInstance().getReference().child("registerdet");
         df= FirebaseDatabase.getInstance().getReference().child("registerdet");
         pg.show();
         df.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                arr.clear();
                 for (DataSnapshot ds:dataSnapshot.getChildren()) {
                     registerdet em = ds.getValue(registerdet.class);
                     String details = "EMPLOYEE NAME: "+em.getName()
@@ -65,10 +79,12 @@ public class yellowcard extends Fragment {
                     if(em.getType().equals("employee")){
                         arr.add(details);
                         arr1.add(em.getNum());
+                        sarr.add(em.getName());
                     }
 
                 }
                 lv.setAdapter(ad);
+                atv.setAdapter(sad);
                 pg.cancel();
             }
 
@@ -78,6 +94,108 @@ public class yellowcard extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_SHORT).show();
                 pg.cancel();
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s= atv.getText().toString();
+                if(!s.equals("")){
+                    ds.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            arr.clear();
+                            for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                                registerdet em = ds.getValue(registerdet.class);
+                                String details = "EMPLOYEE NAME: "+em.getName()
+                                        +"\nEMAIL:"+em.getEmail()
+                                        +"\nCONTACT NO: "+em.getNum();
+                                if(em.getType().equals("employee")&&em.getName().equals(atv.getText().toString())){
+                                    arr.add(details);
+                                    arr1.add(em.getNum());
+                                }
+
+                            }
+                            lv.setAdapter(ad);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                else if(s.equals("")){
+                    pg.show();
+                    df.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            arr.clear();
+                            for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                                registerdet em = ds.getValue(registerdet.class);
+                                String details = "EMPLOYEE NAME: "+em.getName()
+                                        +"\nEMAIL:"+em.getEmail()
+                                        +"\nCONTACT NO: "+em.getNum();
+                                if(em.getType().equals("employee")){
+                                    arr.add(details);
+                                    arr1.add(em.getNum());
+                                    sarr.add(em.getName());
+                                }
+
+                            }
+                            lv.setAdapter(ad);
+                            atv.setAdapter(sad);
+                            pg.cancel();
+                        }
+
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_SHORT).show();
+                            pg.cancel();
+                        }
+                    });
+                }
+                atv.setText("");
+            }
+        });
+        search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                pg.show();
+                df.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        arr.clear();
+                        for (DataSnapshot ds:dataSnapshot.getChildren()) {
+                            registerdet em = ds.getValue(registerdet.class);
+                            String details = "EMPLOYEE NAME: "+em.getName()
+                                    +"\nEMAIL:"+em.getEmail()
+                                    +"\nCONTACT NO: "+em.getNum();
+                            if(em.getType().equals("employee")){
+                                arr.add(details);
+                                arr1.add(em.getNum());
+                                sarr.add(em.getName());
+                            }
+
+                        }
+                        lv.setAdapter(ad);
+                        atv.setAdapter(sad);
+                        pg.cancel();
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_SHORT).show();
+                        pg.cancel();
+                    }
+                });
+                atv.setText("");
+                return true;
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

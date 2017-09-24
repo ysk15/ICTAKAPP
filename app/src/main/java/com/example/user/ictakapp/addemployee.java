@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +31,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
@@ -48,6 +48,7 @@ public class addemployee extends Fragment {
     StorageReference sf;
     ImageView iv;
     ProgressDialog pg;
+    Uri uri;
     public addemployee() {
         // Required empty public constructor
     }
@@ -130,69 +131,45 @@ public class addemployee extends Fragment {
                             Toast.makeText(getActivity(), "Employee Adding Failed", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
-
         }
-
-
             }
         });
-
-
-
-
-
         return  rv;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             pg.show();
-            if (data != null) {
-                Uri uri = data.getData();
-                Bitmap b1 = null;
-                try {
-                    b1 = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            uri = data.getData();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //Bitmap b = Bitmap.createScaledBitmap(b1,200,200,true);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                b1.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                iv.setImageBitmap(b1);
-                pg.show();
-                Uri file = data.getData();
-                StorageReference riversRef = sf.child("emppics/"+file.getLastPathSegment());
-                 UploadTask     uploadTask = riversRef.putFile(file);
-               uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                       pg.dismiss();
-                       if(task.isSuccessful()){
-                           Toast.makeText(getActivity(), "image uploaded", Toast.LENGTH_SHORT).show();
-                           simage=   task.getResult().getDownloadUrl().toString();
-                       }
+             StorageReference ss=   sf.child("images").child(uri.getLastPathSegment());
+                UploadTask uploadTask = ss.putFile(uri);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pg.dismiss();
+                        simage=taskSnapshot.getDownloadUrl().toString();
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        iv.setImageBitmap(bitmap);
 
-                       else{
-                           Toast.makeText(getActivity(), "image uploaded failed", Toast.LENGTH_SHORT).show();
-                       }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pg.dismiss();
+                        Toast.makeText(getActivity(), "Error Uploading IMage", Toast.LENGTH_SHORT).show();
 
-
-                   }
-               }).addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT).show();
-                   }
-               });
-
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
+                    }
+                });
+            }
+        else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "please choose an image", Toast.LENGTH_SHORT).show();
             }
         }
     }
-}
+

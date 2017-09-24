@@ -6,10 +6,26 @@
 
 
     <ListView
+        android:layout_below="@+id/emptv"
         android:id="@+id/lvemp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+       />
+
+    <AutoCompleteTextView
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/empsearch"
+        android:hint="Search Employee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emptv"
+        android:layout_alignParentLeft="true" />
+    <Button
+        android:layout_margin="5dp"
+        android:layout_alignBaseline="@+id/emptv"
+        android:background="@drawable/search"
+        android:layout_alignParentRight="true"
+        android:id="@+id/empsearch"
+        android:layout_width="36dp"
+        android:layout_height="36dp" />
 </RelativeLayout>
