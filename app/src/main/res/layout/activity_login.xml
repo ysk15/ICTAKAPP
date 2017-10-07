@@ -27,21 +27,19 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/view">
+        <EditText
 
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp">
-
+            android:inputType="textPassword"
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PASSWORD"
+            />
     </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:inputType="textPassword"
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="PASSWORD"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
 
     <Button
         android:text="STUDENT REGISTER"
@@ -53,13 +51,13 @@
         android:id="@+id/button6" />
 
     <Button
+        android:layout_marginBottom="30dp"
         android:text="LOGIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button5"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp" />
+        android:layout_above="@+id/button6"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
