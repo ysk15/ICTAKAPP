@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class Employeehome extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +33,9 @@ public class Employeehome extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("employee");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("admin");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
     }
 
     @Override
@@ -83,7 +88,13 @@ public class Employeehome extends AppCompatActivity
         } else if (id == R.id.nav_share) {
             f = new leavestatus();
 
-        } else if (id == R.id.nav_send) {
+        }
+        else if (id == R.id.nav_share1) {
+            f = new chatemp();
+
+        }
+
+        else if (id == R.id.nav_send) {
             finish();
 
         }

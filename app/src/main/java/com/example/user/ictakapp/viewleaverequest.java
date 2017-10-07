@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -89,9 +96,10 @@ public class viewleaverequest extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         leavedet dt = arr1.get(position);
                         dt.setStatus("APPROOVED");
-                        df.child(dt.getEmpl()).setValue(dt).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        df.child(dt.getKey()).setValue(dt).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                send("leave approoved","/topics/employee");
                                 Toast.makeText(getActivity(), "LEAVE APPROOVED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -109,9 +117,10 @@ public class viewleaverequest extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         leavedet dt = arr1.get(position);
                         dt.setStatus("REJECTED");
-                        df.child(dt.getEmpl()).setValue(dt).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        df.child(dt.getKey()).setValue(dt).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                send("leave rejected","/topics/employee");
                                 Toast.makeText(getActivity(), "LEAVE REJECTED ", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -139,6 +148,29 @@ public class viewleaverequest extends Fragment {
 
 
          return  v;
+    }
+    private void send(String body,String to) {
+        final ProgressDialog pr = new ProgressDialog(getActivity());
+        pr.show();
+        HashMap<String,String> map = new HashMap<String, String>();
+        //change key from firebase conosle
+        map.put("Authorization","key=AAAAhBRO_eE:APA91bHQ7CWW6-clKIwuWqmRZagQ3SfBrmeccN5G2XgWIR_wtCXEAAGQDUQsadKVZlLa0KhKRXLAAbW-SGIkKTGEGEcgamNx7VqTbJy7eYjCY5E3OnrMoO0ZJHJGklGTUxxLr3oQpOXb");
+        APIInterface ap = APIClient.getClient1().create(APIInterface.class);
+        NotifyData notifydata = new NotifyData(body);
+        Call<ResponseBody> call2 = ap.sendMessage(map,new Message(to,notifydata,"high"));
+        call2.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                pr.dismiss();
+                Log.d("Response", "onResponse");
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("Response ", "onFailure");
+                pr.dismiss();
+
+            }
+        });
     }
 
 }

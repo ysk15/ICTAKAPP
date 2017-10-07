@@ -36,7 +36,7 @@ Call<ResponseBody> sendlocation(@Field("lat") String lat, @Field("log") String l
     @POST("booking.php")
     Call<ResponseBody> testconfirm(@Field("tstname") String tname, @Field("btot") String trate, @Field("pid") String usrid, @Field("pmode") String pmode, @Field("image") String image);
 
-        @POST("/fcm/send")
+        @POST("fcm/send")
         Call<ResponseBody> sendMessage(@HeaderMap Map<String,String> map, @Body Message message);
 
 

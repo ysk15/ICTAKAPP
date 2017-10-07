@@ -2,6 +2,7 @@ package com.example.user.ictakapp;
 
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,7 +35,7 @@ public class yellowcard extends Fragment {
     ArrayList<String> arr;
     ArrayAdapter<String> ad;
     DatabaseReference df;
-    ArrayList<String> arr1;
+    ArrayList<String> arr1,arr2;
     ListView lv;
     ProgressDialog pg;
     AutoCompleteTextView atv;
@@ -56,6 +57,7 @@ public class yellowcard extends Fragment {
         View v = inflater.inflate(R.layout.fragment_yellowcard, container, false);
         arr = new ArrayList<>();
         arr1 = new ArrayList<>();
+        arr2 = new ArrayList<>();
         lv =(ListView)v.findViewById(R.id.lvemp);
         pg = new ProgressDialog(getActivity());
         atv=(AutoCompleteTextView)v.findViewById(R.id.emptv);
@@ -105,6 +107,8 @@ public class yellowcard extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             arr.clear();
+                            arr1.clear();
+                            arr2.clear();
                             for (DataSnapshot ds:dataSnapshot.getChildren()) {
                                 registerdet em = ds.getValue(registerdet.class);
                                 String details = "EMPLOYEE NAME: "+em.getName()
@@ -113,6 +117,7 @@ public class yellowcard extends Fragment {
                                 if(em.getType().equals("employee")&&em.getName().equals(atv.getText().toString())){
                                     arr.add(details);
                                     arr1.add(em.getNum());
+                                    arr2.add(em.getEmail());
                                 }
 
                             }
@@ -132,6 +137,8 @@ public class yellowcard extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             arr.clear();
+                            arr1.clear();
+                            arr2.clear();
                             for (DataSnapshot ds:dataSnapshot.getChildren()) {
                                 registerdet em = ds.getValue(registerdet.class);
                                 String details = "EMPLOYEE NAME: "+em.getName()
@@ -140,6 +147,7 @@ public class yellowcard extends Fragment {
                                 if(em.getType().equals("employee")){
                                     arr.add(details);
                                     arr1.add(em.getNum());
+                                    arr2.add(em.getEmail());
                                     sarr.add(em.getName());
                                 }
 
@@ -169,6 +177,8 @@ public class yellowcard extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         arr.clear();
+                        arr1.clear();
+                        arr2.clear();
                         for (DataSnapshot ds:dataSnapshot.getChildren()) {
                             registerdet em = ds.getValue(registerdet.class);
                             String details = "EMPLOYEE NAME: "+em.getName()
@@ -177,6 +187,7 @@ public class yellowcard extends Fragment {
                             if(em.getType().equals("employee")){
                                 arr.add(details);
                                 arr1.add(em.getNum());
+                                arr2.add(em.getEmail());
                                 sarr.add(em.getName());
                             }
 
@@ -200,7 +211,7 @@ public class yellowcard extends Fragment {
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
             final  String number = arr1.get(position);
                 AlertDialog.Builder bu = new AlertDialog.Builder(getActivity());
                 bu.setTitle("CALL?");
@@ -211,6 +222,19 @@ public class yellowcard extends Fragment {
                         Intent surf = new Intent(Intent.ACTION_CALL, call);
                         startActivity(surf);
 
+                    }
+                });
+                bu.setNeutralButton("EMAIL?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try{
+                            Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + arr2.get(position)));
+                            intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                            intent.putExtra(Intent.EXTRA_TEXT, "");
+                            startActivity(intent);
+                        }catch(ActivityNotFoundException e){
+                            Toast.makeText(getActivity(), "No App Found to send email", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

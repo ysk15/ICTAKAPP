@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class Adminhome extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +30,9 @@ public class Adminhome extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("admin");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("employee");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
     }
 
     @Override
@@ -82,6 +87,14 @@ public class Adminhome extends AppCompatActivity
         }
         else if (id == R.id.nav_manage1) {
             f = new viewapplicants();
+
+        }
+        else if (id == R.id.nav_send1) {
+        f = new leavecount();
+
+        }
+        else if (id == R.id.nav_send2) {
+            f = new chatlist();
 
         }
         else if (id == R.id.nav_send) {

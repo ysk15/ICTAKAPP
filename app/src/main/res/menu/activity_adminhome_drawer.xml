@@ -25,6 +25,16 @@
             android:title="COURSE REQUESTS" />
 
         <item
+            android:id="@+id/nav_send1"
+            android:icon="@drawable/ic_menu_send"
+            android:title="LEAVE COUNT" />
+
+        <item
+            android:id="@+id/nav_send2"
+            android:icon="@drawable/ic_menu_send"
+            android:title="CHAT" />
+
+        <item
             android:id="@+id/nav_send"
             android:icon="@drawable/ic_menu_send"
             android:title="LOGOUT" />

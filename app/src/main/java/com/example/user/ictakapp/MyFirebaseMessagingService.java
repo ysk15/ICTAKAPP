@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.user.steps_fisat.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -24,7 +23,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
        b.setAutoCancel(true)
                .setDefaults(Notification.DEFAULT_ALL)
                .setWhen(System.currentTimeMillis())
-               .setSmallIcon(R.drawable.icon)
+               .setSmallIcon(R.mipmap.ic_launcher)
                .setContentTitle("New notification")
                .setContentText(remoteMessage.getData().get("body"))
                .setDefaults(Notification.DEFAULT_LIGHTS| Notification.DEFAULT_SOUND)
